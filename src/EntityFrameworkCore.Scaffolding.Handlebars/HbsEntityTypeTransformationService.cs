@@ -10,12 +10,12 @@ namespace EntityFrameworkCore.Scaffolding.Handlebars
         /// <summary>
         /// Entity name transformer.
         /// </summary>
-        public Func<string, string> EntityTypeNameTransformer { get; }
+        public Func<EntityInfo, string> EntityTypeNameTransformer { get; }
 
         /// <summary>
         /// Entity file name transformer.
         /// </summary>
-        public Func<string, string> EntityFileNameTransformer { get; }
+        public Func<EntityInfo, string> EntityFileNameTransformer { get; }
 
         /// <summary>
         /// Constructor transformer.
@@ -41,8 +41,8 @@ namespace EntityFrameworkCore.Scaffolding.Handlebars
         /// <param name="propertyTransformer">Property name transformer.</param>
         /// <param name="navPropertyTransformer">Navigation property name transformer.</param>
         public HbsEntityTypeTransformationService(
-            Func<string, string> entityTypeNameTransformer = null,
-            Func<string, string> entityFileNameTransformer = null,
+            Func<EntityInfo, string> entityTypeNameTransformer = null,
+            Func<EntityInfo, string> entityFileNameTransformer = null,
             Func<EntityPropertyInfo, EntityPropertyInfo> constructorTransformer = null,
             Func<EntityPropertyInfo, EntityPropertyInfo> propertyTransformer = null,
             Func<EntityPropertyInfo, EntityPropertyInfo> navPropertyTransformer = null)
@@ -58,17 +58,25 @@ namespace EntityFrameworkCore.Scaffolding.Handlebars
         /// Transform entity type name.
         /// </summary>
         /// <param name="entityName">Entity type name.</param>
+        /// <param name="entitySchema">Entity schema name</param>
         /// <returns>Transformed entity type name.</returns>
-        public string TransformTypeEntityName(string entityName) =>
-            EntityTypeNameTransformer?.Invoke(entityName) ?? entityName;
+        public string TransformTypeEntityName(string entityName, string entitySchema)
+        {
+            var entityInfo = new EntityInfo { EntityName = entityName, EntitySchema = entitySchema };
+            return EntityTypeNameTransformer?.Invoke(entityInfo) ?? entityName;
+        }
 
         /// <summary>
         /// Transform entity file name.
         /// </summary>
         /// <param name="entityFileName">Entity file name.</param>
+        /// <param name="entitySchema">Entity schema name</param>
         /// <returns>Transformed entity file name.</returns>
-        public string TransformEntityFileName(string entityFileName) =>
-            EntityFileNameTransformer?.Invoke(entityFileName) ?? entityFileName;
+        public string TransformEntityFileName(string entityFileName, string entitySchema)
+        {
+            var entityInfo = new EntityInfo { EntityName = entityFileName, EntitySchema = entitySchema };
+            return EntityFileNameTransformer?.Invoke(entityInfo) ?? entityFileName;
+        }
 
         /// <summary>
         /// Transform single property name.

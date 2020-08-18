@@ -199,8 +199,8 @@ namespace Microsoft.EntityFrameworkCore.Design
         /// <param name="navPropertyTransformer">Navigation property name transformer.</param>
         /// <returns>The same service collection so that multiple calls can be chained.</returns>
         public static IServiceCollection AddHandlebarsTransformers(this IServiceCollection services,
-            Func<string, string> entityNameTransformer = null,
-            Func<string, string> entityFileNameTransformer = null,
+            Func<EntityInfo, string> entityNameTransformer = null,
+            Func<EntityInfo, string> entityFileNameTransformer = null,
             Func<EntityPropertyInfo, EntityPropertyInfo> constructorTransformer = null,
             Func<EntityPropertyInfo, EntityPropertyInfo> propertyTransformer = null,
             Func<EntityPropertyInfo, EntityPropertyInfo> navPropertyTransformer = null)

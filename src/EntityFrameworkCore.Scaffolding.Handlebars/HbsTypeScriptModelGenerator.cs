@@ -131,7 +131,7 @@ namespace EntityFrameworkCore.Scaffolding.Handlebars
                         options.ModelNamespace,
                         options.UseDataAnnotations);
 
-                    var transformedFileName = EntityTypeTransformationService.TransformEntityFileName(entityType.DisplayName());
+                    var transformedFileName = EntityTypeTransformationService.TransformEntityFileName(entityType.DisplayName(), entityType.GetSchema());
                     var entityTypeFileName = transformedFileName + FileExtension;
                     if (_options?.Value?.EnableSchemaFolders == true) {
                         entityTypeFileName = entityType.GetSchema() + @"\" + entityTypeFileName;

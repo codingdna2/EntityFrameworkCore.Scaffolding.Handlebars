@@ -123,7 +123,7 @@ namespace EntityFrameworkCore.Scaffolding.Handlebars
         {
             Check.NotNull(entityType, nameof(entityType));
 
-            var transformedEntityName = EntityTypeTransformationService.TransformTypeEntityName(entityType.Name);
+            var transformedEntityName = EntityTypeTransformationService.TransformTypeEntityName(entityType.Name, entityType.GetSchema());
 
             TemplateData.Add("comment", entityType.GetComment());
             TemplateData.Add("class", transformedEntityName);

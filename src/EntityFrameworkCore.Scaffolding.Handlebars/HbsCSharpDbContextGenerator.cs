@@ -296,7 +296,7 @@ namespace EntityFrameworkCore.Scaffolding.Handlebars
             foreach (var entityType in model.GetScaffoldEntityTypes(_options.Value))
             {
                 var transformedEntityTypeName = GetEntityTypeName(
-                    entityType, EntityTypeTransformationService.TransformTypeEntityName(entityType.Name));
+                    entityType, EntityTypeTransformationService.TransformTypeEntityName(entityType.Name, entityType.GetSchema()));
                 dbSets.Add(new Dictionary<string, object>
                 {
                     { "set-property-type", transformedEntityTypeName },
@@ -347,7 +347,7 @@ namespace EntityFrameworkCore.Scaffolding.Handlebars
             if (!_entityTypeBuilderInitialized)
             {
                 var transformedEntityTypeName = GetEntityTypeName(
-                    entityType, EntityTypeTransformationService.TransformTypeEntityName(entityType.Name));
+                    entityType, EntityTypeTransformationService.TransformTypeEntityName(entityType.Name, entityType.GetSchema()));
 
                 sb.AppendLine();
                 sb.AppendLine($"modelBuilder.Entity<{transformedEntityTypeName}>({EntityLambdaIdentifier} =>");
@@ -811,7 +811,7 @@ namespace EntityFrameworkCore.Scaffolding.Handlebars
 
             lines.Add(
                 $".{nameof(ReferenceReferenceBuilder.HasForeignKey)}"
-                + (foreignKey.IsUnique ? $"<{GetEntityTypeName(foreignKey.PrincipalEntityType, EntityTypeTransformationService.TransformTypeEntityName(((ITypeBase)foreignKey.DeclaringEntityType).DisplayName()))}>" : "")
+                + (foreignKey.IsUnique ? $"<{GetEntityTypeName(foreignKey.PrincipalEntityType, EntityTypeTransformationService.TransformTypeEntityName(((ITypeBase)foreignKey.DeclaringEntityType).DisplayName(), foreignKey.PrincipalEntityType.GetSchema()))}>" : "")
                 + $"(d => {GenerateLambdaToKey(foreignKey.Properties, "d", EntityTypeTransformationService.TransformPropertyName)})");
 
             var defaultOnDeleteAction = foreignKey.IsRequired

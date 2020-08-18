@@ -154,7 +154,7 @@ namespace EntityFrameworkCore.Scaffolding.Handlebars
                 GenerateEntityTypeDataAnnotations(entityType);
             }
 
-            var transformedEntityName = EntityTypeTransformationService.TransformTypeEntityName(entityType.Name);
+            var transformedEntityName = EntityTypeTransformationService.TransformTypeEntityName(entityType.Name, entityType.GetSchema());
             
             TemplateData.Add("comment", entityType.GetComment());
             TemplateData.Add("class", transformedEntityName);
@@ -449,7 +449,7 @@ namespace EntityFrameworkCore.Scaffolding.Handlebars
                         !navigation.DeclaringEntityType.GetPropertiesAndNavigations().Any(
                                 m => m.Name == inverseNavigation.DeclaringEntityType.Name ||
                                     EntityTypeTransformationService.TransformNavPropertyName(m.Name, navigation.GetTargetType().Name) == EntityTypeTransformationService.TransformNavPropertyName(inverseNavigation.DeclaringEntityType.Name, navigation.GetTargetType().Name))
-                            ? $"nameof({EntityTypeTransformationService.TransformTypeEntityName(inverseNavigation.DeclaringType.Name)}.{propertyName})"
+                            ? $"nameof({EntityTypeTransformationService.TransformTypeEntityName(inverseNavigation.DeclaringType.Name, inverseNavigation.DeclaringEntityType.GetSchema())}.{propertyName})"
                             : CSharpHelper.Literal(propertyName));
 
                     NavPropertyAnnotations.Add(new Dictionary<string, object>
